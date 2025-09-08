@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class DruidUtils {
     private static final DruidDataSource dataSource;
     public static QueryRunner qr = new QueryRunner();
-    private static Connection conn = null;
+    private static Connection conn;
 
     /**
      * 初始化数据库
@@ -36,8 +36,7 @@ public class DruidUtils {
      */
     public static Connection getConnection(){
         try {
-            conn = dataSource.getConnection();
-            return conn;
+            return dataSource.getConnection();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

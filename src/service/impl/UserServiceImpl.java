@@ -9,10 +9,14 @@ import java.util.List;
 
 public class UserServiceImpl implements UserService {
     UserDao userDao = new UserDaoImpl();
+    public static List<User> userList;
+    public static int count;
 
     @Override
-    public List<User> getAllUserInfo() {
-        return userDao.getAllUserInfo();
+    public void getAllUserInfo(String page,String limit) {
+        userList = userDao.getAllUserInfo(page,limit);
+        count = userDao.getAllUserInfoCount();
     }
+
 
 }
