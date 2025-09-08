@@ -7,4 +7,5 @@ import java.util.List;
 public interface UserDao {
     public List<User> getAllUserInfo(String page,String limit);
     public int getAllUserInfoCount();
+    public int updateUserInfo(User user);
 }

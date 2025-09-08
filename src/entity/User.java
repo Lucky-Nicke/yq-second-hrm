@@ -2,6 +2,9 @@ package entity;
 
 import java.sql.Timestamp;
 
+/**
+ * 用户表实体类
+ */
 public class User {
     private Integer ID;
     private String loginname;

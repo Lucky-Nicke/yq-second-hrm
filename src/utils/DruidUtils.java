@@ -34,7 +34,7 @@ public class DruidUtils {
     /**
      * 连接数据库
      */
-    public static Connection getConnection(){
+    public static Connection getConnection() {
         try {
             return dataSource.getConnection();
         } catch (SQLException e) {
@@ -44,9 +44,10 @@ public class DruidUtils {
 
     /**
      * 结束资源（返回连接池，并非关闭资源）
+     *
      * @param connection 传递conn对象
      */
-    public static void closeConnection(Connection connection){
+    public static void closeConnection(Connection connection) {
         try {
             if (connection != null) {
                 connection.close();
