@@ -58,10 +58,6 @@
         <!-- 内容主体区域 -->
         <component :is="currentComponent" v-if="currentComponent"></component>
       </div>
-      <div class="layui-footer">
-        <!-- 底部固定区域 -->
-        底部固定区域
-      </div>
     </div>
   </div>
 </template>
