@@ -5,7 +5,9 @@ import entity.User;
 import java.util.List;
 
 public interface UserDao {
-    public List<User> getAllUserInfo(String page,String limit);
-    public int getAllUserInfoCount();
-    public int updateUserInfo(User user);
+    List<User> getAllUserInfo(String page,String limit);
+    int getAllUserInfoCount();
+    int updateUserInfo(User user);
+    int delUserInfo(int delId);
+    int addUserInfo(User user);
 }

@@ -27,4 +27,15 @@ public class UserServiceImpl implements UserService {
         return updateSuccess == 1;
     }
 
+    @Override
+    public boolean delUserInfo(int delId) {
+        int delSuccess = userDao.delUserInfo(delId);
+        return delSuccess == 1;
+    }
+
+    @Override
+    public boolean addUserInfo(User user) {
+        int addSuccess = userDao.addUserInfo(user);
+        return addSuccess == 1;
+    }
 }

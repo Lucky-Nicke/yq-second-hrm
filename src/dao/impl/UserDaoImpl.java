@@ -63,4 +63,29 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
+    @Override
+    public int delUserInfo(int delId) {
+        try {
+            conn = getConnection();
+            String sql = "delete from user_inf where id=?";
+            return qr.update(conn,sql,delId);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DruidUtils.closeConnection(conn);
+        }
+    }
+
+    @Override
+    public int addUserInfo(User user) {
+        try {
+            conn = getConnection();
+            String sql = "insert into user_inf (loginname,PASSWORD,username) values (?,?,?)";
+            return qr.update(conn,sql,user.getLoginname(),user.getPASSWORD(),user.getUsername());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DruidUtils.closeConnection(conn);
+        }
+    }
 }

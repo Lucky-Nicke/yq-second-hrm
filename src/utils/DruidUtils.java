@@ -19,7 +19,7 @@ public class DruidUtils {
      */
     static {
         dataSource = new DruidDataSource();
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/hrm?useUnicode=true&characterEncoding=UTF-8&userSSL=false&serverTimezone=GMT%2B8");
         dataSource.setUsername("root");
         dataSource.setPassword("Zjh20040301");

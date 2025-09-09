@@ -25,9 +25,9 @@ public class FormResponse {
     private String code;
     @JSONField(ordinal = 2)
     private String msg;
-    @JSONField(ordinal = 3, serialize = false)
+    @JSONField(ordinal = 3)
     private Integer count;
-    @JSONField(ordinal = 4, serialize = false)
+    @JSONField(ordinal = 4)
     private Object data;
 
     public FormResponse(String code, String msg) {

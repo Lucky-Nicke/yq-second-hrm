@@ -3,6 +3,7 @@ package controller;
 import Response.FormResponse;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import entity.User;
 import service.UserService;
 import service.impl.UserServiceImpl;
@@ -28,24 +29,30 @@ import static service.impl.UserServiceImpl.userList;
 public class UserServlet extends HttpServlet {
     UserService userService = new UserServiceImpl();
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doGet(req, resp);
     }
 
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doGet(req, resp);
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String path = request.getServletPath();
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doGet(req, resp);
+    }
+
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String path = req.getServletPath();
+        System.out.println(path);
         switch (path) {
             case "/user/getAllUserInfo":
-                String page = request.getParameter("page");
-                String limit = request.getParameter("limit");
+                String page = req.getParameter("page");
+                String limit = req.getParameter("limit");
 
-                response.setContentType("application/json;charset=UTF-8");
+                resp.setContentType("application/json;charset=UTF-8");
                 userService.getAllUserInfo(page, limit);
-                FormResponse formResponse = new FormResponse(
+                FormResponse queryResponse = new FormResponse(
                         "0",
                         "查询用户成功",
                         count,
@@ -53,20 +60,20 @@ public class UserServlet extends HttpServlet {
                 );
 
                 String QueryJson = JSON.toJSONString(
-                        formResponse,
+                        queryResponse,
                         SerializerFeature.WriteMapNullValue,
                         SerializerFeature.WriteDateUseDateFormat,
                         SerializerFeature.MapSortField
                 );
-                response.getWriter().write(QueryJson);
+                resp.getWriter().write(QueryJson);
                 break;
             case "/user/updateUserInfo":
                 StringBuilder updateUserInfo = new StringBuilder();
                 FormResponse updateResponse;
                 String line;
-                response.setContentType("application/json;charset=UTF-8");
+                resp.setContentType("application/json;charset=UTF-8");
 
-                while ((line = request.getReader().readLine()) != null) {
+                while ((line = req.getReader().readLine()) != null) {
                     updateUserInfo.append(line);
                 }
                 String jsonStr = updateUserInfo.toString();
@@ -84,16 +91,81 @@ public class UserServlet extends HttpServlet {
                             "用户信息更改失败！"
                     );
                 }
+
+                SimplePropertyPreFilter updateFilter = new SimplePropertyPreFilter(
+                        FormResponse.class,
+                        "code", "msg"
+                );
+
                 String updateJson = JSON.toJSONString(
                         updateResponse,
+                        updateFilter,
                         SerializerFeature.WriteMapNullValue,
                         SerializerFeature.MapSortField
                 );
-                response.getWriter().write(updateJson);
+                resp.getWriter().write(updateJson);
                 break;
             case "/user/delUserInfo":
+                String delIdStr = req.getParameter("delId");
+                resp.setContentType("application/json;charset=UTF-8");
+                FormResponse delResponse;
+                boolean delSuccess = userService.delUserInfo(Integer.parseInt(delIdStr));
+
+                if (delSuccess) {
+                    delResponse = new FormResponse(
+                            "0",
+                            "删除用户信息成功！"
+                    );
+                } else {
+                    delResponse = new FormResponse(
+                            "1",
+                            "删除用户信息失败！"
+                    );
+                }
+
+                SimplePropertyPreFilter delFilter = new SimplePropertyPreFilter(
+                        FormResponse.class,
+                        "code", "msg"
+                );
+
+                String delJson = JSON.toJSONString(
+                        delResponse,
+                        delFilter,
+                        SerializerFeature.WriteMapNullValue,
+                        SerializerFeature.MapSortField
+                );
+                resp.getWriter().write(delJson);
                 break;
             case "/user/addUserInfo":
+                StringBuilder addUserInfo = new StringBuilder();
+                FormResponse addResponse;
+                String line2;
+                resp.setContentType("application/json;charset=UTF-8");
+
+                while ((line2 = req.getReader().readLine()) != null) {
+                    addUserInfo.append(line2);
+                }
+                String jsonStr2 = addUserInfo.toString();
+                User user2 = JSON.parseObject(jsonStr2, User.class);
+                boolean addSuccess = userService.addUserInfo(user2);
+                if (addSuccess) {
+                    addResponse = new FormResponse("0", "添加新用户成功！");
+                }else{
+                    addResponse = new FormResponse("1", "添加新用户成功！");
+                }
+
+                SimplePropertyPreFilter addFilter = new SimplePropertyPreFilter(
+                        FormResponse.class,
+                        "code", "msg"
+                );
+
+                String addJson = JSON.toJSONString(
+                        addResponse,
+                        addFilter,
+                        SerializerFeature.WriteMapNullValue,
+                        SerializerFeature.MapSortField
+                );
+                resp.getWriter().write(addJson);
                 break;
             default:
                 break;
