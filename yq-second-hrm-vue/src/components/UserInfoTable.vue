@@ -15,7 +15,6 @@ export default {
     this.tableEvent();
     this.SearchDropdownEvent();
     this.initSearchDropdown();
-    this.initAddDropdown();
     // 监听窗口 resize 事件，动态调整表格（解决窗口缩放后表格不适应问题）
     window.addEventListener("resize", this.handleResize);
   },
@@ -65,15 +64,8 @@ export default {
           ],
           toolbar: `
               <div class="layui-btn-container">
-                <button class="layui-btn layui-bg-blue" id="addUserInfoBtn">
-                  添加用户 
-                  <i class="layui-icon layui-icon-down layui-font-12"></i>
-                </button>
+                <button type="button" class="layui-btn layui-bg-blue" lay-event="addUser">添加用户</button>
                 <button type="button" class="layui-btn layui-bg-red" lay-event="delMoreUser">批量删除</button>
-                <button class="layui-btn" id="searchUserInfo">
-                  自定义内容
-                  <i class="layui-icon layui-icon-list layui-font-14"></i>
-                </button>
               </div> 
           `,
           page: {
@@ -86,205 +78,6 @@ export default {
           initSort: { field: "iD", type: "asc" },
         });
       });
-    },
-
-    //顶部工具栏搜索窗口
-    initSearchDropdown() {
-      layui.use(["table", "form", "layer", "util"], function () {
-        const table = layui.table;
-        const form = layui.form;
-        const dropdown = layui.dropdown;
-
-        dropdown.render({
-          elem: "#searchUserInfo",
-          content: [
-            `
-                <div class="layui-form" lay-filter="searchUserInfo" style="padding: 20px;">
-                  <!-- 用户名 -->
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">用户名</label>
-                    <div class="layui-input-block">
-                      <input type="text" name="loginname" placeholder="请输入用户名" autocomplete="off" class="layui-input">
-                    </div>
-                  </div>
-                
-                  <!-- 状态 -->
-                  <div class="layui-form-item">
-                    <label class="layui-form-label">状态</label>
-                    <div class="layui-input-block">
-                      <input type="radio" name="STATUS" value="2" title="在线" checked>
-                      <input type="radio" name="STATUS" value="1" title="离线">
-                    </div>
-                  </div>
-                
-                  <!-- 按钮区域 -->
-                  <div class="layui-form-item">
-                    <div class="layui-input-block">
-                      <button class="layui-btn layui-bg-blue" id="submitBtn" lay-submit>提交</button>
-                    </div>
-                  </div>
-                </div>
-              `,
-          ].join(""),
-          style:
-            "width: 370px; height: 200px; box-shadow: 1px 1px 30px rgb(0 0 0 / 12%);",
-          // shade: 0.3, // 弹出时开启遮罩 --- 2.8+
-          ready: function () {
-            //渲染表格
-            form.render(null, "searchUserInfo");
-
-            //提交事件
-            form.on("submit", function (data) {
-              //重载表格：用搜索接口替换原接口，传搜索参数
-              table.reloadData(
-                "userInfoTable",
-                {
-                  url: "http://192.168.192.232/user/searchUserInfo", // 搜索API
-                  method: "GET", // 强制用GET请求（Layui Table默认GET，这里显式声明更清晰）
-                  where: {
-                    loginname: data.field.loginname,
-                    STATUS: data.field.STATUS,
-                  }, // 拼接在URL后的参数（会自动转成 ?page=1&limit=10&loginname=xxx）
-                  page: {
-                    curr: 1, // 重置为第1页（避免搜索后停留在原页码）
-                  },
-                  scrollPos: true, // 保持滚动位置（可选）
-                },
-                "data"
-              ); // "data" 表示只重载数据，不重载表格结构
-              return false; // 阻止表单默认提交（必加）
-            });
-          },
-        });
-      });
-      return false;
-    },
-
-    //顶部工具栏添加用户下拉菜单
-    initAddDropdown() {
-      layui.use(["table", "form", "layer", "util"], function () {
-        const table = layui.table;
-        const form = layui.form;
-        const layer = layui.layer;
-        const util = layui.util;
-        const dropdown = layui.dropdown;
-
-        dropdown.render({
-          elem: "#addUserInfoBtn", // 可绑定在id=addUserInfoBtn任意元素中
-          data: [
-            {
-              id: "addNormal",
-              title: "单个添加",
-            },
-            {
-              id: "addMore",
-              title: "批量添加",
-            },
-          ],
-          // 菜单被点击的事件
-          click: function (obj) {
-            var checkStatus = table.checkStatus(obj.id);
-            var data = checkStatus.data; // 获取选中的数据
-            switch (obj.id) {
-              case "addNormal":
-                console.log(obj);
-                let addUserInfoForm = layer.open({
-                  type: 1,
-                  title: "添加用户",
-                  area: ["560px", "350px"],
-                  shadeClose: true,
-                  content: `
-                        <div class="layui-form" lay-filter="addUserForm" style="padding: 20px;">
-                          <!-- 用户名 -->
-                          <div class="layui-form-item">
-                            <label class="layui-form-label">用户名</label>
-                            <div class="layui-input-block">
-                              <input type="text" name="loginname" placeholder="请输入用户名" autocomplete="off" class="layui-input" lay-verify="required|username" lay-on="username-tips-top">
-                            </div>
-                          </div>
-                        
-                          <!-- 密码 -->
-                          <div class="layui-form-item">
-                            <label class="layui-form-label">密码</label>
-                            <div class="layui-input-block">
-                              <input type="password" name="PASSWORD" placeholder="请输入密码" autocomplete="off" class="layui-input" lay-verify="required|username" lay-on="password-tips-top">
-                            </div>
-                          </div>
-                        
-                          <!-- 身份 -->
-                          <div class="layui-form-item">
-                            <label class="layui-form-label">身份</label>
-                            <div class="layui-input-block">
-                              <input type="radio" name="username" value="普通用户" title="普通用户" checked>
-                              <input type="radio" name="username" value="管理员" title="管理员">
-                            </div>
-                          </div>
-                        
-                          <!-- 按钮区域 -->
-                          <div class="layui-form-item">
-                            <div class="layui-input-block">
-                              <button class="layui-btn layui-bg-blue" id="submitBtn" lay-submit>提交</button>
-                            </div>
-                          </div>
-                        </div>
-                      `,
-                  success: function (layero) {
-                    //渲染表格
-                    form.render(null, "addUserForm");
-                    //tips弹窗提示输入要求
-                    util.on("lay-on", {
-                      "username-tips-top": function () {
-                        layer.tips(
-                          "至少要有一个英文字符！不能有特殊字符，首尾不能出现下划线",
-                          this,
-                          {
-                            tips: 1,
-                          }
-                        );
-                      },
-                      "password-tips-top": function () {
-                        layer.tips("密码必须为 6 到 16 位的非空字符", this, {
-                          tips: 1,
-                        });
-                      },
-                    });
-                    //提交事件
-                    form.on("submit", function (data) {
-                      axios
-                        .post("http://192.168.192.232/user/addUserInfo", {
-                          PASSWORD: data.field.PASSWORD,
-                          loginname: data.field.loginname,
-                          username: data.field.username,
-                        })
-                        .then(function (res) {
-                          if (res.data.code == 0) {
-                            layer.close(addUserInfoForm, function () {
-                              layer.msg(res.data.msg, { icon: 1 });
-                            });
-                            table.reloadData("userInfoTable", {
-                              scrollPos: true,
-                            });
-                          } else if (res.data.code == 1) {
-                            layer.close(addUserInfoForm, function () {
-                              layer.msg(res.data.msg, { icon: 2 });
-                            });
-                          }
-                        })
-                        .catch(function (error) {
-                          console.log(error);
-                        });
-                    });
-                  },
-                });
-                break;
-              case "addMore":
-                layer.msg("后端还在生成中....");
-                break;
-            }
-          },
-        });
-      });
-      return false;
     },
 
     //单元格事件
@@ -438,7 +231,7 @@ export default {
                         });
                         table.reload("userInfoTable", {
                           scrollPos: false,
-                        },);
+                        });
                       } else if (res.data.code == 1) {
                         layer.close(editUserForm, function () {
                           layer.msg(res.data.msg, { icon: 2 });
@@ -462,6 +255,7 @@ export default {
       layui.use(["table", "form", "layer", "util"], function () {
         const table = layui.table;
         const layer = layui.layer;
+
         table.on("toolbar(userInfoTable)", function (obj) {
           let event = obj.event;
 
@@ -506,6 +300,7 @@ export default {
                 }
               );
             }
+          } else if (event == "addUser") {
           }
         });
       });
@@ -515,10 +310,6 @@ export default {
 
   activated() {
     this.initTable();
-    this.tableEvent();
-    this.SearchDropdownEvent();
-    this.initSearchDropdown();
-    this.initAddDropdown();
   },
 };
 </script>
