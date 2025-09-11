@@ -38,4 +38,18 @@ public class UserServiceImpl implements UserService {
         int addSuccess = userDao.addUserInfo(user);
         return addSuccess == 1;
     }
+
+    @Override
+    public void searchUserInfo(String area, String loginname, String status, String page, String limit) {
+        switch (area) {
+            case "status":
+                userList = userDao.searchUserInfoByStauts(status, page, limit);
+                count = userDao.getSearchUserInfoByStautsCount(status);
+                break;
+            case "all":
+                userList = userDao.searchUserInfoByName(loginname, status, page, limit);
+                count = userDao.getSearchUserInfoByNameCount(loginname, status);
+                break;
+        }
+    }
 }

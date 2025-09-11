@@ -68,7 +68,7 @@ public class UserDaoImpl implements UserDao {
         try {
             conn = getConnection();
             String sql = "delete from user_inf where id=?";
-            return qr.update(conn,sql,delId);
+            return qr.update(conn, sql, delId);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -81,7 +81,72 @@ public class UserDaoImpl implements UserDao {
         try {
             conn = getConnection();
             String sql = "insert into user_inf (loginname,PASSWORD,username) values (?,?,?)";
-            return qr.update(conn,sql,user.getLoginname(),user.getPASSWORD(),user.getUsername());
+            return qr.update(conn, sql, user.getLoginname(), user.getPASSWORD(), user.getUsername());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DruidUtils.closeConnection(conn);
+        }
+    }
+
+    @Override
+    public List<User> searchUserInfoByName(String loginname, String status, String page, String limit) {
+        conn = getConnection();
+
+        int pageNum = page == null || page.isEmpty() ? 1 : Integer.parseInt(page);
+        int pageSize = limit == null || limit.isEmpty() ? 10 : Integer.parseInt(limit);
+
+        int startIndex = (pageNum - 1) * pageSize;
+        String searchLoginname = "%" + loginname + "%";
+        try {
+            String sql = "select * from user_inf where loginname like ? AND STATUS=? limit ?,?";
+            return qr.query(conn, sql, new BeanListHandler<>(User.class), searchLoginname, status, startIndex, pageSize);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DruidUtils.closeConnection(conn);
+        }
+    }
+
+    @Override
+    public List<User> searchUserInfoByStauts(String status, String page, String limit) {
+        conn = getConnection();
+        int pageNum = page == null || page.isEmpty() ? 1 : Integer.parseInt(page);
+        int pageSize = limit == null || limit.isEmpty() ? 10 : Integer.parseInt(limit);
+
+        int startIndex = (pageNum - 1) * pageSize;
+        try {
+            String sql = "select * from user_inf where STATUS=? limit ?,?";
+            return qr.query(conn, sql, new BeanListHandler<>(User.class), status, startIndex, pageSize);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DruidUtils.closeConnection(conn);
+        }
+    }
+
+    @Override
+    public int getSearchUserInfoByNameCount(String loginname, String status) {
+        String searchLoginname = "%" + loginname + "%";
+        try {
+            conn = getConnection();
+            String sql = "select count(*) from user_inf where loginname like ? AND STATUS=?";
+            Long count = qr.query(conn, sql, new ScalarHandler<>(), searchLoginname, status);
+            return count.intValue();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DruidUtils.closeConnection(conn);
+        }
+    }
+
+    @Override
+    public int getSearchUserInfoByStautsCount(String status) {
+        try {
+            conn = getConnection();
+            String sql = "select count(*) from user_inf where STATUS=?";
+            Long count = qr.query(conn, sql, new ScalarHandler<>(), status);
+            return count.intValue();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {

@@ -24,8 +24,9 @@ import static service.impl.UserServiceImpl.userList;
  * 添加用户：/user/addUserInfo
  * 删除用户：/user/delUserInfo
  * 编辑用户：/user/updateUserInfo
+ * 查询用户：/user/searchUserInfo
  */
-@WebServlet(urlPatterns = {"/user/getAllUserInfo", "/user/updateUserInfo", "/user/delUserInfo", "/user/addUserInfo"})
+@WebServlet(urlPatterns = {"/user/getAllUserInfo", "/user/updateUserInfo", "/user/delUserInfo", "/user/addUserInfo", "/user/searchUserInfo"})
 public class UserServlet extends HttpServlet {
     UserService userService = new UserServiceImpl();
 
@@ -150,7 +151,7 @@ public class UserServlet extends HttpServlet {
                 boolean addSuccess = userService.addUserInfo(user2);
                 if (addSuccess) {
                     addResponse = new FormResponse("0", "添加新用户成功！");
-                }else{
+                } else {
                     addResponse = new FormResponse("1", "添加新用户成功！");
                 }
 
@@ -166,6 +167,33 @@ public class UserServlet extends HttpServlet {
                         SerializerFeature.MapSortField
                 );
                 resp.getWriter().write(addJson);
+                break;
+            case "/user/searchUserInfo":
+                String page2 = req.getParameter("page");
+                String limit2 = req.getParameter("limit");
+                String loginname = req.getParameter("loginname");
+                String status = req.getParameter("STATUS");
+
+                if (loginname == null || loginname.isEmpty()) {
+                    userService.searchUserInfo("status", null, status, page2, limit2);
+                } else {
+                    userService.searchUserInfo("all", loginname, status, page2, limit2);
+                }
+
+                FormResponse searchQueryResponse = new FormResponse(
+                        "0",
+                        "索引查询用户成功",
+                        count,
+                        userList
+                );
+
+                String searchQueryJson = JSON.toJSONString(
+                        searchQueryResponse,
+                        SerializerFeature.WriteMapNullValue,
+                        SerializerFeature.WriteDateUseDateFormat,
+                        SerializerFeature.MapSortField
+                );
+                resp.getWriter().write(searchQueryJson);
                 break;
             default:
                 break;
