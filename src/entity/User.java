@@ -1,5 +1,7 @@
 package entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.sql.Timestamp;
 
 /**
@@ -10,8 +12,21 @@ public class User {
     private String loginname;
     private String PASSWORD;
     private int STATUS;
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Timestamp createdate;
     private String username;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "ID=" + ID +
+                ", loginname='" + loginname + '\'' +
+                ", PASSWORD='" + PASSWORD + '\'' +
+                ", STATUS=" + STATUS +
+                ", createdate=" + createdate +
+                ", username='" + username + '\'' +
+                '}';
+    }
 
     public User(Integer ID, String loginname, String PASSWORD, int STATUS, Timestamp createdate, String username) {
         this.ID = ID;

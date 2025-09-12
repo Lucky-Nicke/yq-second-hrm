@@ -23,6 +23,7 @@ public class DruidUtils {
         dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/hrm?useUnicode=true&characterEncoding=UTF-8&userSSL=false&serverTimezone=GMT%2B8");
         dataSource.setUsername("root");
         dataSource.setPassword("Zjh20040301");
+        System.getProperties().put("druid.mysql.usePingMethod", "false");
 
         dataSource.setInitialSize(5);
         dataSource.setMaxActive(20);

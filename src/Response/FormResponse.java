@@ -35,6 +35,12 @@ public class FormResponse {
         this.msg = msg;
     }
 
+    public FormResponse(String code, String msg, Object data) {
+        this.code = code;
+        this.msg = msg;
+        this.data = data;
+    }
+
     public FormResponse(String code, String msg, Integer count, Object data) {
         this.code = code;
         this.msg = msg;
