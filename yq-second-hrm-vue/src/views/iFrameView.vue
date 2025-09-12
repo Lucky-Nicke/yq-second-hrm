@@ -15,45 +15,36 @@
             </a>
             <!-- 头像点击下拉菜单 -->
             <dl class="layui-nav-child">
-              <dd><a href="javascript:;">Your Profile</a></dd>
-              <dd><a href="javascript:;">Settings</a></dd>
-              <dd><a href="javascript:;">Sign out</a></dd>
+              <dd><a href="javascript:;">个人信息</a></dd>
+              <dd><a href="javascript:;">退出登录</a></dd>
             </dl>
           </li>
         </ul>
       </div>
+      
       <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
           <!-- 左侧导航区域 -->
-          <ul class="layui-nav layui-nav-tree" lay-filter="test">
+          <ul class="layui-nav layui-nav-tree">
             <li class="layui-nav-item layui-nav-itemed">
-              <a class="" href="javascript:;">menu group 1</a>
+              <a class="" href="javascript:;">公司管理</a>
               <dl class="layui-nav-child">
                 <dd>
                   <a href="javascript:;" @click="showComponent('UserInfoTable')"
-                    >用户信息表</a
+                    >用户管理</a
                   >
                 </dd>
-                <dd><a href="javascript:;">menu 2</a></dd>
-                <dd><a href="javascript:;">menu 3</a></dd>
-                <dd><a href="javascript:;">the links</a></dd>
+                <dd><a href="javascript:;">员工管理</a></dd>
+                <dd><a href="javascript:;">职位管理</a></dd>
               </dl>
             </li>
             <li class="layui-nav-item">
-              <a href="javascript:;">menu group 2</a>
-              <dl class="layui-nav-child">
-                <dd><a href="javascript:;">list 1</a></dd>
-                <dd><a href="javascript:;">list 2</a></dd>
-                <dd><a href="javascript:;">超链接</a></dd>
-              </dl>
+              <a href="javascript:;">下载中心</a>
             </li>
-            <li class="layui-nav-item">
-              <a href="javascript:;">click menu item</a>
-            </li>
-            <li class="layui-nav-item"><a href="javascript:;">the links</a></li>
           </ul>
         </div>
       </div>
+
       <div class="layui-body">
         <!-- 内容主体区域 -->
         <component :is="currentComponent" v-if="currentComponent"></component>
@@ -81,12 +72,6 @@ export default {
     },
   },
   mounted() {
-    layui.use(function () {
-      var element = layui.element;
-      element.render("nav");
-    });
-  },
-  activated() {
     layui.use(function () {
       var element = layui.element;
       element.render("nav");
