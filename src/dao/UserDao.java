@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface UserDao {
     List<User> getAllUserInfo(String page,String limit);
-    List<User> searchUserInfoByName(String loginname,String status,String page, String limit);
-    List<User> searchUserInfoByStauts(String status,String page, String limit);
+    List<User> searchUserInfoByName(String loginname,String status);
+    List<User> searchUserInfoByStauts(String status);
     int getSearchUserInfoByNameCount(String loginname,String status);
     int getSearchUserInfoByStautsCount(String status);
     int getAllUserInfoCount();
