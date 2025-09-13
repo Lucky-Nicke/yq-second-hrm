@@ -1,15 +1,21 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import iFrameView from '@/views/iFrameView.vue'
+import LoginView from '@/views/LoginView.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'iFrame',
-    component: iFrameView
+    name: 'LoginView',
+    component: LoginView
   },
+  {
+    path: '/admin',
+    name: 'iFrameView',
+    component: iFrameView
+  }
 ]
 
 const router = new VueRouter({

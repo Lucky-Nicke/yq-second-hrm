@@ -16,12 +16,12 @@
             <!-- 头像点击下拉菜单 -->
             <dl class="layui-nav-child">
               <dd><a href="javascript:;">个人信息</a></dd>
-              <dd><a href="javascript:;">退出登录</a></dd>
+              <dd><a href="javascript:;" @click="logout">退出登录</a></dd>
             </dl>
           </li>
         </ul>
       </div>
-      
+
       <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
           <!-- 左侧导航区域 -->
@@ -54,10 +54,11 @@
 </template>
 
 <script>
+import router from "@/router";
 import UserInfoTable from "../components/UserInfoTable.vue";
 
 export default {
-  name: "iFrame",
+  name: "iFrameView",
   components: {
     UserInfoTable,
   },
@@ -70,10 +71,21 @@ export default {
     showComponent(Component) {
       this.currentComponent = Component;
     },
+    logout() {
+      layui.use(function () {
+        const layer = layui.layer;
+
+        //TODO退出登录异步请求
+        layer.msg("退出登录成功！", { icon: 1, time: 1000 }, function () {
+          router.push("/");
+        });
+      });
+    },
   },
   mounted() {
     layui.use(function () {
-      var element = layui.element;
+      const element = layui.element;
+
       element.render("nav");
     });
   },
