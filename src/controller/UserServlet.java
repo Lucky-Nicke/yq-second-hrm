@@ -169,13 +169,15 @@ public class UserServlet extends HttpServlet {
                 resp.getWriter().write(addJson);
                 break;
             case "/user/searchUserInfo":
+                String page2 = req.getParameter("page");
+                String limit2 = req.getParameter("limit");
                 String loginname = req.getParameter("loginname");
                 String status = req.getParameter("STATUS");
 
                 if (loginname == null || loginname.isEmpty()) {
-                    userService.searchUserInfo("status", null, status);
+                    userService.searchUserInfo("status", null, status, page2, limit2);
                 } else {
-                    userService.searchUserInfo("all", loginname, status);
+                    userService.searchUserInfo("all", loginname, status, page2, limit2);
                 }
 
                 FormResponse searchQueryResponse = new FormResponse(

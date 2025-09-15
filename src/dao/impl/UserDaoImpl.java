@@ -90,13 +90,16 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> searchUserInfoByName(String loginname, String status) {
-        conn = getConnection();
-
-        String searchLoginname = "%" + loginname + "%";
+    public List<User> searchUserInfoByName(String loginname, String status, String page, String limit) {
         try {
-            String sql = "select * from user_inf where loginname like ? AND STATUS=?";
-            return qr.query(conn, sql, new BeanListHandler<>(User.class), searchLoginname, status);
+            conn = getConnection();
+            String searchLoginname = "%" + loginname + "%";
+            int pageNum = page == null || page.isEmpty() ? 1 : Integer.parseInt(page);
+            int pageSize = limit == null || limit.isEmpty() ? 10 : Integer.parseInt(limit);
+
+            int startIndex = (pageNum - 1) * pageSize;
+            String sql = "select * from user_inf where loginname like ? AND STATUS=? limit ?,?";
+            return qr.query(conn, sql, new BeanListHandler<>(User.class), searchLoginname, status, startIndex, pageSize);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
@@ -105,12 +108,16 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> searchUserInfoByStauts(String status) {
-        conn = getConnection();
+    public List<User> searchUserInfoByStauts(String status, String page, String limit) {
 
         try {
-            String sql = "select * from user_inf where STATUS=?";
-            return qr.query(conn, sql, new BeanListHandler<>(User.class), status);
+            conn = getConnection();
+            int pageNum = page == null || page.isEmpty() ? 1 : Integer.parseInt(page);
+            int pageSize = limit == null || limit.isEmpty() ? 10 : Integer.parseInt(limit);
+
+            int startIndex = (pageNum - 1) * pageSize;
+            String sql = "select * from user_inf where STATUS=? limit ?,?";
+            return qr.query(conn, sql, new BeanListHandler<>(User.class), status, startIndex, pageSize);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {

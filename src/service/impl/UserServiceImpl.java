@@ -40,14 +40,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void searchUserInfo(String area, String loginname, String status) {
+    public void searchUserInfo(String area, String loginname, String status, String page, String limit) {
         switch (area) {
             case "status":
-                userList = userDao.searchUserInfoByStauts(status);
+                userList = userDao.searchUserInfoByStauts(status, page, limit);
                 count = userDao.getSearchUserInfoByStautsCount(status);
                 break;
             case "all":
-                userList = userDao.searchUserInfoByName(loginname, status);
+                userList = userDao.searchUserInfoByName(loginname, status, page, limit);
                 count = userDao.getSearchUserInfoByNameCount(loginname, status);
                 break;
         }
