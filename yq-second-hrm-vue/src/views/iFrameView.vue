@@ -56,6 +56,7 @@
 <script>
 import router from "@/router";
 import UserInfoTable from "../components/UserInfoTable.vue";
+import axios from "axios";
 
 export default {
   name: "iFrameView",
@@ -75,10 +76,24 @@ export default {
       layui.use(function () {
         const layer = layui.layer;
 
+        axios
+          .post("http://192.168.192.232/logout?loginname=admin", {
+            params: {},//TODO要替换为本地储存的用户信息
+          })
+          .then(function (res) {
+            if (res.data.code == 200) {
+              localStorage.removeItem("username");
+              localStorage.removeItem("loginname");
+              localStorage.removeItem("id");
+              localStorage.removeItem("status");
+              localStorage.removeItem("createdate");
+              localStorage.removeItem("username");
+              layer.msg("退出登录成功！", { icon: 1, time: 1000 }, function () {
+                router.push("/");
+              });
+            }
+          });
         //TODO退出登录异步请求
-        layer.msg("退出登录成功！", { icon: 1, time: 1000 }, function () {
-          router.push("/");
-        });
       });
     },
   },
