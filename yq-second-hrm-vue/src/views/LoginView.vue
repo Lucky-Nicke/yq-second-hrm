@@ -2,7 +2,6 @@
   <div>
     <component
       :is="currentComponent"
-      v-if="currentComponent"
       @toReg="showRegFrom"
       @toLogin="showLoginFrom"
       @toCPaw="showChangePwdFrom"

@@ -434,6 +434,11 @@ export default {
         const table = layui.table;
         const layer = layui.layer;
 
+        const isSearch = !!loginname || !!status;
+        const url = isSearch
+          ? "http://192.168.192.232/user/searchUserInfo"
+          : "http://192.168.192.232/user/getAllUserInfo";
+
         axios
           .get("http://192.168.192.232/user/searchUserInfo", {
             params: {
@@ -447,52 +452,16 @@ export default {
               table.reload("userInfoTable", {
                 data: tableData,
                 page: {
-                  curr: 1,
                   prev: "上一页",
                   next: "下一页",
                   theme: "#1E9FFF",
                 },
-                url: "",
-                where: {},
-                cols: [
-                  [
-                    { type: "checkbox", fixed: "left", width: "5%" },
-                    {
-                      field: "iD",
-                      title: "ID",
-                      sort: true,
-                      fixed: true,
-                      width: "8%",
-                    },
-                    { field: "loginname", title: "用户名", width: "18%" },
-                    { field: "pASSWORD", title: "密码", width: "18%" },
-                    {
-                      field: "sTATUS",
-                      title: "状态",
-                      sort: true,
-                      width: "8%",
-                      templet: (d) =>
-                        d.sTATUS === 2
-                          ? '<span class="layui-badge-dot layui-bg-green"></span>在线'
-                          : '<span class="layui-badge-dot layui-bg-red"></span>离线',
-                    },
-                    {
-                      field: "username",
-                      title: "身份",
-                      sort: true,
-                      width: "12%",
-                    },
-                    { field: "createdate", title: "创建时间", width: "15%" },
-                    {
-                      title: "操作",
-                      fixed: "right",
-                      width: "15%",
-                      templet: () =>
-                        '<button class="layui-btn layui-btn-xs layui-bg-blue" lay-event="edit">编辑</button>' +
-                        '<button class="layui-btn layui-btn-xs layui-bg-red" lay-event="del">删除</button>',
-                    },
-                  ],
-                ],
+                url: url, // 动态切换接口
+                where: {
+                  // 传递参数（searchUserInfo 用，getAllUserInfo 可忽略多余参数）
+                  loginname: loginname,
+                  STATUS: status,
+                },
               });
             } else {
               layer.msg(msg || "查询失败", { icon: 2 });

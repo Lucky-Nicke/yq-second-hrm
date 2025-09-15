@@ -47,7 +47,7 @@
 
       <div class="layui-body">
         <!-- 内容主体区域 -->
-        <component :is="currentComponent" v-if="currentComponent"></component>
+        <component :is="currentComponent"></component>
       </div>
     </div>
   </div>
