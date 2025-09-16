@@ -14,7 +14,7 @@
             </div>
             <input
               type="text"
-              name="nickname"
+              name="loginname"
               lay-verify="required"
               placeholder="用户名"
               autocomplete="off"
@@ -95,9 +95,13 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "Register",
   mounted() {
+    const vueInstance = this;
+
     layui.use(["form", "layer"], function () {
       const form = layui.form;
       const layer = layui.layer;
@@ -244,24 +248,44 @@ export default {
       });
       form.render();
 
+      // 自定义密码验证规则
+      form.verify({
+        pass: [/^[\S]{6,12}$/, "密码必须6到12位，且不能出现空格"],
+        // 验证两次密码是否一致
+        confirmPass: function (value) {
+          const password = document.getElementById("reg-password").value;
+          if (value !== password) {
+            return "两次输入的密码不一致";
+          }
+        },
+      });
+
       // 监听表单提交
       form.on("submit(demo-reg)", function (data) {
-        // 表单验证通过，可以提交数据
-        console.log("表单数据：", data.field);
-
-        // 自定义密码验证规则
-        form.verify({
-          pass: [/^[\S]{6,12}$/, "密码必须6到12位，且不能出现空格"],
-          // 验证两次密码是否一致
-          confirmPass: function (value) {
-            const password = document.getElementById("reg-password").value;
-            if (value !== password) {
-              return "两次输入的密码不一致";
-            }
-          },
-        });
+        if (data.field.agreement == "on") {
+          axios
+            .post("http://192.168.192.232/register/submit", {
+              loginname: data.field.loginname,
+              password: data.field.password,
+            })
+            .then(function (response) {
+              if (response.data.code == 200) {
+                layer.msg(
+                  response.data.msg,
+                  { icon: 1, time: 1500 },
+                  function () {
+                    vueInstance.$emit("toLogin");
+                  }
+                );
+              } else if (response.data.code == 401) {
+                layer.msg(response.data.msg, { icon: 2, time: 1500 });
+              }
+            });
+        } else {
+          layer.msg("请勾选用户协议！！", { icon: 2, time: 1000 });
+        }
         //TODO提交前检测完密码还要检测名字以及是否勾选了用户协议
-        
+
         // 阻止默认提交行为
         return false;
       });

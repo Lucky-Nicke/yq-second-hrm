@@ -17,6 +17,7 @@
               type="text"
               name="loginname"
               value=""
+              v-model="loginName"
               lay-verify="required"
               placeholder="用户名"
               lay-reqtext="请填写用户名"
@@ -36,6 +37,7 @@
               type="password"
               name="password"
               value=""
+              v-model="password"
               lay-verify="required"
               placeholder="密码"
               lay-reqtext="请填写密码"
@@ -50,6 +52,7 @@
           <input
             type="checkbox"
             name="remember"
+            v-model="rememberAcc"
             lay-skin="primary"
             title="记住密码"
           />
@@ -89,6 +92,13 @@ import router from "@/router";
 import axios from "axios";
 
 export default {
+  data() {
+    return {
+      loginName: localStorage.getItem("loginName"),
+      password: localStorage.getItem("password"),
+      rememberAcc: localStorage.getItem("rememberAcc"),
+    };
+  },
   mounted() {
     layui.use(["form", "layer"], function () {
       const form = layui.form;
@@ -105,6 +115,18 @@ export default {
           })
           .then(function (res) {
             if (res.data.code == 200) {
+              if (field.remember == "on") {
+                console.log(res);
+                
+                localStorage.setItem("loginName", field.loginname);
+                localStorage.setItem("password", field.password);
+                localStorage.setItem("rememberAcc", "1");
+              } else {
+                localStorage.removeItem("loginName");
+                localStorage.removeItem("password");
+                localStorage.removeItem("rememberAcc");
+              }
+
               if (res.data.data.username == "管理员") {
                 layer.msg(res.data.msg, { icon: 1, time: 1000 }, function () {
                   localStorage.setItem("loginname", res.data.data.loginname);
