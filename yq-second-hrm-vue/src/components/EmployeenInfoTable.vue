@@ -107,7 +107,11 @@ export default {
                 templet: (d) => (d.SEX === 2 ? "女" : "男"),
               },
               { field: "pARTY", title: "政治面貌", width: "8%" },
-              { field: "bIRTHDAY", title: "生日", width: "12%" },
+              {
+                field: "bIRTHDAY",
+                title: "生日",
+                width: "12%",
+              },
               { field: "rACE", title: "民族", width: "8%" },
               { field: "eDUCATION", title: "学历", width: "8%" },
               { field: "sPECIALITY", title: "特长", width: "10%" },
@@ -721,7 +725,7 @@ export default {
                 <div class="layui-form-item">
                     <label class="layui-form-label">生日</label>
                     <div class="layui-input-block">
-                    <input type="text" name="BIRTHDAY" class="layui-input" placeholder="yyyy-MM-dd" id="birthdayPicker">
+                    <input type="text" name="BIRTHDAY" class="layui-input" id="ID-laydate-demo" placeholder="yyyy-MM-dd" id="birthdayPicker">
                     </div>
                 </div>
                 
@@ -786,6 +790,14 @@ export default {
               success: function () {
                 // 表单渲染
                 form.render(null, "addEmployeeForm");
+
+                layui.use(function () {
+                  const laydate = layui.laydate;
+                  // 渲染日期选择器
+                  laydate.render({
+                    elem: "#ID-laydate-demo",
+                  });
+                });
 
                 // 表单验证
                 form.verify({
