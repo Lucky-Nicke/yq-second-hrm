@@ -5,9 +5,9 @@ import java.util.Date;
 
 public class Employee {
     private int ID;
-    private int DEPT_ID;
-    private int JOB_ID;
-    private String NAME;
+    private String deptName;
+    private String jobNam;
+    private String name;
     private String CARD_ID;
     private String ADDRESS;
     private String POST_CODE;
@@ -28,11 +28,11 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(int ID, int DEPT_ID, int JOB_ID, String NAME, String CARD_ID, String ADDRESS, String POST_CODE, String TEL, String PHONE, String QQ_NUM, String EMAIL, int SEX, String PARTY, Timestamp BIRTHDAY, String RACE, String EDUCATION, String SPECIALITY, String HOBBY, String REMARK, Date CREATE_DATE) {
+    public Employee(int ID, String deptName, String jobNam, String name, String CARD_ID, String ADDRESS, String POST_CODE, String TEL, String PHONE, String QQ_NUM, String EMAIL, int SEX, String PARTY, Timestamp BIRTHDAY, String RACE, String EDUCATION, String SPECIALITY, String HOBBY, String REMARK, Date CREATE_DATE) {
         this.ID = ID;
-        this.DEPT_ID = DEPT_ID;
-        this.JOB_ID = JOB_ID;
-        this.NAME = NAME;
+        this.deptName = deptName;
+        this.jobNam = jobNam;
+        this.name = name;
         this.CARD_ID = CARD_ID;
         this.ADDRESS = ADDRESS;
         this.POST_CODE = POST_CODE;
@@ -59,28 +59,28 @@ public class Employee {
         this.ID = ID;
     }
 
-    public int getDEPT_ID() {
-        return DEPT_ID;
+    public String getDeptName() {
+        return deptName;
     }
 
-    public void setDEPT_ID(int DEPT_ID) {
-        this.DEPT_ID = DEPT_ID;
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
     }
 
-    public int getJOB_ID() {
-        return JOB_ID;
+    public String getJobNam() {
+        return jobNam;
     }
 
-    public void setJOB_ID(int JOB_ID) {
-        this.JOB_ID = JOB_ID;
+    public void setJobNam(String jobNam) {
+        this.jobNam = jobNam;
     }
 
-    public String getNAME() {
-        return NAME;
+    public String getName() {
+        return name;
     }
 
-    public void setNAME(String NAME) {
-        this.NAME = NAME;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getCARD_ID() {

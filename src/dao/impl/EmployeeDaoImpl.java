@@ -25,7 +25,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
             int startIndex = (pageNum - 1) * pageSize;
             String sql = "SELECT " +
-                    "emp.ID ,dept.`NAME`, job.`NAME` ,emp.`NAME`, CARD_ID,ADDRESS, POST_CODE ,TEL ,PHONE ,QQ_NUM ,EMAIL, SEX, PARTY ,BIRTHDAY, RACE, EDUCATION ,SPECIALITY ,HOBBY ,emp.REMARK ,CREATE_DATE " +
+                    "emp.ID ,dept.`NAME` as deptName, job.`NAME` as jobNam,emp.`NAME` as name, CARD_ID,ADDRESS, POST_CODE ,TEL ,PHONE ,QQ_NUM ,EMAIL, SEX, PARTY ,BIRTHDAY, RACE, EDUCATION ,SPECIALITY ,HOBBY ,emp.REMARK ,CREATE_DATE " +
                     "FROM " +
                     "employee_inf emp " +
                     "INNER JOIN " +
@@ -67,9 +67,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
                     "sex, party, birthday, race, education, speciality, hobby, remark) " +
                     "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             return qr.update(conn, sql,
-                    employee.getDEPT_ID(),
-                    employee.getJOB_ID(),
-                    employee.getNAME(),
+                    employee.getDeptName(),
+                    employee.getJobNam(),
+                    employee.getName(),
                     employee.getCARD_ID(),
                     employee.getADDRESS(),
                     employee.getPOST_CODE(),
@@ -111,9 +111,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
             conn = DruidUtils.getConnection();
             String sql = "update employee_inf set DEPT_ID=?, JOB_ID=?, NAME=?, CARD_ID=?,ADDRESS=?, POST_CODE=?, TEL=?, PHONE=?, QQ_NUM=?, EMAIL=?,SEX=?, PARTY=?, BIRTHDAY=?, RACE=?, EDUCATION=?, SPECIALITY=?, HOBBY=?, REMARK=? WHERE ID=?";
             return qr.update(conn, sql,
-                    employee.getDEPT_ID(),
-                    employee.getJOB_ID(),
-                    employee.getNAME(),
+                    employee.getDeptName(),
+                    employee.getJobNam(),
+                    employee.getName(),
                     employee.getCARD_ID(),
                     employee.getADDRESS(),
                     employee.getPOST_CODE(),
@@ -146,7 +146,19 @@ public class EmployeeDaoImpl implements EmployeeDao {
             int pageSize = limit == null || limit.isEmpty() ? 10 : Integer.parseInt(limit);
 
             int startIndex = (pageNum - 1) * pageSize;
-            String sql = "select * from employee_inf where NAME like ? limit ?,?";
+            String sql = "SELECT " +
+                    "emp.ID ,dept.`NAME` as deptName, job.`NAME` as jobNam,emp.`NAME` as name, CARD_ID,ADDRESS, POST_CODE ,TEL ,PHONE ,QQ_NUM ,EMAIL, SEX, PARTY ,BIRTHDAY, RACE, EDUCATION ,SPECIALITY ,HOBBY ,emp.REMARK ,CREATE_DATE " +
+                    "FROM " +
+                    "employee_inf emp " +
+                    "INNER JOIN " +
+                    "job_inf job " +
+                    "ON " +
+                    "emp.JOB_ID = job.ID " +
+                    "INNER JOIN " +
+                    "dept_inf dept " +
+                    "ON " +
+                    "dept.ID = emp.DEPT_ID " +
+                    "where emp.`NAME` like ? limit ?,?";
             return qr.query(conn, sql, new BeanListHandler<>(Employee.class),searchUsername, startIndex, pageSize);
         } catch (SQLException e) {
             throw new RuntimeException(e);
