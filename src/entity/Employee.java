@@ -1,5 +1,6 @@
 package entity;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class Employee {
@@ -16,7 +17,7 @@ public class Employee {
     private String EMAIL;
     private int SEX;
     private String PARTY;
-    private Date BIRTHDAY;
+    private Timestamp BIRTHDAY;
     private String RACE;
     private String EDUCATION;
     private String SPECIALITY;
@@ -27,7 +28,7 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(int ID, int DEPT_ID, int JOB_ID, String NAME, String CARD_ID, String ADDRESS, String POST_CODE, String TEL, String PHONE, String QQ_NUM, String EMAIL, int SEX, String PARTY, Date BIRTHDAY, String RACE, String EDUCATION, String SPECIALITY, String HOBBY, String REMARK, Date CREATE_DATE) {
+    public Employee(int ID, int DEPT_ID, int JOB_ID, String NAME, String CARD_ID, String ADDRESS, String POST_CODE, String TEL, String PHONE, String QQ_NUM, String EMAIL, int SEX, String PARTY, Timestamp BIRTHDAY, String RACE, String EDUCATION, String SPECIALITY, String HOBBY, String REMARK, Date CREATE_DATE) {
         this.ID = ID;
         this.DEPT_ID = DEPT_ID;
         this.JOB_ID = JOB_ID;
@@ -154,11 +155,11 @@ public class Employee {
         this.PARTY = PARTY;
     }
 
-    public Date getBIRTHDAY() {
+    public Timestamp getBIRTHDAY() {
         return BIRTHDAY;
     }
 
-    public void setBIRTHDAY(Date BIRTHDAY) {
+    public void setBIRTHDAY(Timestamp BIRTHDAY) {
         this.BIRTHDAY = BIRTHDAY;
     }
 
