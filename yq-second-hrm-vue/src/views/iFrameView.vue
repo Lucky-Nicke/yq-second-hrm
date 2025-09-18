@@ -11,11 +11,10 @@
                 src="//unpkg.com/outeres@0.0.10/img/layui/icon-v2.png"
                 class="layui-nav-img"
               />
-              tester
+              {{ username }}
             </a>
             <!-- 头像点击下拉菜单 -->
             <dl class="layui-nav-child">
-              <dd><a href="javascript:;">个人信息</a></dd>
               <dd><a href="javascript:;" @click="logout">退出登录</a></dd>
             </dl>
           </li>
@@ -34,8 +33,13 @@
                     >用户管理</a
                   >
                 </dd>
-                <dd><a href="javascript:;">员工管理</a></dd>
-                <dd><a href="javascript:;">职位管理</a></dd>
+                <dd>
+                  <a
+                    href="javascript:;"
+                    @click="showComponent('EmployeenInfoTable')"
+                    >员工管理</a
+                  >
+                </dd>
               </dl>
             </li>
             <li class="layui-nav-item">
@@ -46,10 +50,17 @@
       </div>
 
       <div class="layui-body">
-        <!-- 内容主体区域 -->
-        <component :is="currentComponent"></component>
+        <!-- 内容主体区域：右侧框架内显示主页内容 + 切换组件 -->
+        <!-- 1. 默认显示主页内容（UserInfoHeader + WelcomeContent） -->
+        <div v-if="!currentComponent" class="home-content">
+          <UserInfoHeader />
+          <WelcomeContent />
+        </div>
+        <!-- 2. 点击左侧导航时，显示对应组件（覆盖主页内容） -->
+        <component v-else :is="currentComponent"></component>
       </div>
     </div>
+    <!-- 已将主页组件移动到右侧 .layui-body 内，此处删除外层组件引用 -->
   </div>
 </template>
 
@@ -57,15 +68,22 @@
 import router from "@/router";
 import UserInfoTable from "../components/UserInfoTable.vue";
 import axios from "axios";
+import EmployeenInfoTable from "@/components/EmployeenInfoTable.vue";
+import UserInfoHeader from "@/components/UserInfoHeader.vue";
+import WelcomeContent from "@/components/WelcomeContent.vue";
 
 export default {
   name: "iFrameView",
   components: {
     UserInfoTable,
+    EmployeenInfoTable,
+    UserInfoHeader,
+    WelcomeContent,
   },
   data() {
     return {
-      currentComponent: null,
+      currentComponent: null, // 初始为null，默认显示主页内容
+      username: localStorage.getItem("loginname"),
     };
   },
   methods: {
@@ -77,8 +95,10 @@ export default {
         const layer = layui.layer;
 
         axios
-          .post("http://192.168.192.232/logout?loginname=admin", {
-            params: {},//TODO要替换为本地储存的用户信息
+          .post("http://192.168.192.232/logout", {
+            params: {
+              loginname: localStorage.getItem("loginname"),
+            },
           })
           .then(function (res) {
             if (res.data.code == 200) {
@@ -93,14 +113,12 @@ export default {
               });
             }
           });
-        //TODO退出登录异步请求
       });
     },
   },
   mounted() {
     layui.use(function () {
       const element = layui.element;
-
       element.render("nav");
     });
   },
@@ -108,4 +126,7 @@ export default {
 </script>
 
 <style scoped lang="less">
+.home-content {
+  padding: 20px;
+}
 </style>

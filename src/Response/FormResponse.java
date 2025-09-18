@@ -15,7 +15,7 @@ import com.alibaba.fastjson.annotation.JSONField;
  *             "loginname": "admin",
  *             "pASSWORD": "123456",
  *             "sTATUS": 2,
- *             "username": "超级管理员"
+ *             "username": "管理员"
  *         }
  *     ]
  * }
