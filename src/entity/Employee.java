@@ -5,6 +5,8 @@ import java.util.Date;
 
 public class Employee {
     private int ID;
+    private Integer DEPT_ID;
+    private Integer JOB_ID;
     private String deptName;
     private String jobNam;
     private String name;
@@ -28,8 +30,10 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(int ID, String deptName, String jobNam, String name, String CARD_ID, String ADDRESS, String POST_CODE, String TEL, String PHONE, String QQ_NUM, String EMAIL, int SEX, String PARTY, Timestamp BIRTHDAY, String RACE, String EDUCATION, String SPECIALITY, String HOBBY, String REMARK, Date CREATE_DATE) {
+    public Employee(int ID, Integer DEPT_ID, Integer JOB_ID, String deptName, String jobNam, String name, String CARD_ID, String ADDRESS, String POST_CODE, String TEL, String PHONE, String QQ_NUM, String EMAIL, int SEX, String PARTY, Timestamp BIRTHDAY, String RACE, String EDUCATION, String SPECIALITY, String HOBBY, String REMARK, Date CREATE_DATE) {
         this.ID = ID;
+        this.DEPT_ID = DEPT_ID;
+        this.JOB_ID = JOB_ID;
         this.deptName = deptName;
         this.jobNam = jobNam;
         this.name = name;
@@ -57,6 +61,22 @@ public class Employee {
 
     public void setID(int ID) {
         this.ID = ID;
+    }
+
+    public Integer getDEPT_ID() {
+        return DEPT_ID;
+    }
+
+    public void setDEPT_ID(Integer DEPT_ID) {
+        this.DEPT_ID = DEPT_ID;
+    }
+
+    public Integer getJOB_ID() {
+        return JOB_ID;
+    }
+
+    public void setJOB_ID(Integer JOB_ID) {
+        this.JOB_ID = JOB_ID;
     }
 
     public String getDeptName() {

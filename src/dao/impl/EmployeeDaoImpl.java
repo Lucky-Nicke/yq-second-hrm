@@ -67,8 +67,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
                     "sex, party, birthday, race, education, speciality, hobby, remark) " +
                     "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             return qr.update(conn, sql,
-                    employee.getDeptName(),
-                    employee.getJobNam(),
+                    employee.getDEPT_ID(),
+                    employee.getJOB_ID(),
                     employee.getName(),
                     employee.getCARD_ID(),
                     employee.getADDRESS(),
@@ -111,8 +111,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
             conn = DruidUtils.getConnection();
             String sql = "update employee_inf set DEPT_ID=?, JOB_ID=?, NAME=?, CARD_ID=?,ADDRESS=?, POST_CODE=?, TEL=?, PHONE=?, QQ_NUM=?, EMAIL=?,SEX=?, PARTY=?, BIRTHDAY=?, RACE=?, EDUCATION=?, SPECIALITY=?, HOBBY=?, REMARK=? WHERE ID=?";
             return qr.update(conn, sql,
-                    employee.getDeptName(),
-                    employee.getJobNam(),
+                    employee.getDEPT_ID(),
+                    employee.getJOB_ID(),
                     employee.getName(),
                     employee.getCARD_ID(),
                     employee.getADDRESS(),
