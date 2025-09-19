@@ -1,43 +1,26 @@
-package entity;
+package DTO;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
 import java.sql.Timestamp;
 
-/**
- * 用户表实体类
- */
-public class User {
+public class UserInfo {
     private Integer ID;
     private String loginname;
-    private String PASSWORD;
     private int STATUS;
     @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Timestamp createdate;
     private String username;
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "ID=" + ID +
-                ", loginname='" + loginname + '\'' +
-                ", PASSWORD='" + PASSWORD + '\'' +
-                ", STATUS=" + STATUS +
-                ", createdate=" + createdate +
-                ", username='" + username + '\'' +
-                '}';
-    }
-
-    public User(Integer ID, String loginname, String PASSWORD, int STATUS, Timestamp createdate, String username) {
+    public UserInfo(Integer ID, String loginname, int STATUS, Timestamp createdate, String username) {
         this.ID = ID;
         this.loginname = loginname;
-        this.PASSWORD = PASSWORD;
         this.STATUS = STATUS;
         this.createdate = createdate;
         this.username = username;
     }
 
-    public User() {
+    public UserInfo() {
     }
 
     public Integer getID() {
@@ -54,14 +37,6 @@ public class User {
 
     public void setLoginname(String loginname) {
         this.loginname = loginname;
-    }
-
-    public String getPASSWORD() {
-        return PASSWORD;
-    }
-
-    public void setPASSWORD(String PASSWORD) {
-        this.PASSWORD = PASSWORD;
     }
 
     public int getSTATUS() {
