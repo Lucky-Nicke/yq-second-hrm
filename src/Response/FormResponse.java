@@ -2,24 +2,6 @@ package Response;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
-/**
- * JSON示例
- * {
- * "code": "0",
- * "msg": "查询用户成功",
- * "count": 1,
- * "data": [
- * {
- * "createdate": "2016-03-12 09:34:28",
- * "iD": 1,
- * "loginname": "admin",
- * "pASSWORD": "123456",
- * "sTATUS": 2,
- * "username": "超级管理员"
- * }
- * ]
- * }
- */
 public class FormResponse {
     @JSONField(ordinal = 1)
     private String code;
